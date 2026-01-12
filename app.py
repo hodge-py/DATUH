@@ -1,6 +1,6 @@
 import os
 import mysql.connector
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -24,6 +24,29 @@ def index():
         return render_template('index.html',message="connected to db")
     except Exception as e:
         return f"Error connecting to database: {str(e)}"
+    
+
+@app.route('/event')
+def main():
+    try:
+        return render_template('main.html')
+    except Exception as e:
+        return f"Error"
+    
+
+@app.route('/emailSent', methods=['GET','POST'])
+def email():
+    try:
+        if request.method == 'POST':
+            user_message = request.form.get('email')
+        
+            response_message = f"Server received: '{user_message}'. Status: Success!"
+        
+            return jsonify(message=response_message)
+        
+    except Exception as e:
+        print("hey")
+
 
 if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000,debug=True)
