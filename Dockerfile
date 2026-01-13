@@ -7,6 +7,12 @@ WORKDIR /app
 # Copy the requirements file into the container
 COPY requirements.txt .
 
+RUN apt-get update && apt-get install -y \
+    gcc \
+    libmariadb-dev \
+    pkg-config \
+    && rm -rf /var/lib/apt/lists/*
+
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
